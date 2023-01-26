@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {        //vai ser incrementado automaticamente
+  id          Int      @id @default(autoincrement())
+  email       String   @unique
+  name        String   // String?= pode estar incrementado ou não, mas também pode ser nulo
+  Post  Post[]
+  created_at  DateTime @default(now())  //no momento em que ele criar, ele vai pegar a data atual do sistema
+}
+
+model Post {
+  id          Int      @id @default(autoincrement())
+  content     String 
+  userId      Int
+  created_at  DateTime @default(now())  //no momento em que ele criar, ele vai pegar a data atual do sistema
+  author      User     @relation(fields: [userId], references: [id])
+}
+
+//para executar/criar as tabelas, basta colocar o comando "yarn prisma migrate dev" no terminal 
+//as migrations são como historicos das coisas que são feitas no nosso banco de dados
+
